@@ -44,3 +44,28 @@ def type_calc(type_atk=18, type_def=18):
         return 1
     else:
         return type_chart[type_atk][type_def]
+
+def type_message(type_mult=1):
+    """Takes a type effectiveness float and returns the appropriate message.
+
+    Args:
+        type_mult (float/int): The input type effectiveness. Defaults to 1.
+
+    Returns:
+        string: The matching message for the type effectiveness.
+    """
+    match type_mult:
+        case 0:
+            return "It had no effect!"
+        case 0.25:
+            return "It's barely effective!"
+        case 0.5:
+            return "It's not very effective."
+        case 1:
+            return "It's regularly effective"
+        case 2:
+            return "It's supereffective!"
+        case 4:
+            return "It's extremely effective!"
+        case _:
+            return "Unexpected Value"

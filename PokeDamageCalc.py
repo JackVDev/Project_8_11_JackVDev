@@ -68,32 +68,6 @@ def damage_calc(basepower=100, total_atk=100, total_def=100, type_mult=1, stab=1
     if final_damage < 1: final_damage = 1 # 1 Is the minimum for damage dealt
     return final_damage
 
-# Function needed? Type effectiveness to message
-def type_message(type_mult=1):
-    """Takes a type effectiveness float and returns the appropriate message.
-
-    Args:
-        type_mult (float/int): The input type effectiveness. Defaults to 1.
-
-    Returns:
-        string: The matching message for the type effectiveness.
-    """
-    match type_mult:
-        case 0:
-            return "It had no effect!"
-        case 0.25:
-            return "It's barely effective!"
-        case 0.5:
-            return "It's not very effective."
-        case 1:
-            return "It's regularly effective"
-        case 2:
-            return "It's supereffective!"
-        case 4:
-            return "It's extremely effective!"
-        case _:
-            return "Unexpected Value"
-
 # Function: Stage Multiplier
 def stage_mult(value=10, stage=0):
     """Multiplies a value using pokemon's stage system
@@ -164,7 +138,7 @@ print(f"With an Defence stat of {given_def} at stage {given_defst},\nthe defendi
 
 # Outputs the type matchup info for the user
 print(f"Using a {typechart.type_list[given_typeatk]}-type move against a {typechart.type_list[given_typedef1]}/{typechart.type_list[given_typedef2]} Pokemon results in a type multiplier of {total_typemult}")
-print(type_message(total_typemult))
+print(typechart.type_message(total_typemult))
 
 if total_typemult == 0:
     # If total_typemult is 0, then the move will never deal damage
