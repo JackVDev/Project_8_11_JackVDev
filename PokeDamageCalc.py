@@ -6,6 +6,7 @@
 """
 
 import typechart
+import PokeSaveStats
 
 # Function: Display a number as a percent of another number, rounded to two decimal places
 def percentof(part=10, total=10):
@@ -102,69 +103,85 @@ def stage_mult(value=10, stage=0):
     mult = stage_num / stage_den
     return round(value * mult)
 
-# Code needed: User input
-print("- Pokemon Damage Calculator -\n")
+usercontinue = True
 
-# input block for stats and stages
-given_atk = int(valid_input("Please input the attacking Pokemon's Attack stat: ", list(range(1,740))))
-if given_atk < 1: given_atk = 1
-given_atkst = int(valid_input("Please input the attacking Pokemon's Attack stage: ", list(range(-6,7))))
-given_def = int(valid_input("Please input the defending Pokemon's Defence stat: ", list(range(1,740))))
-if given_def < 1: given_def = 1
-given_defst = int(valid_input("Please input the defending Pokemon's Defence stage: ", list(range(-6,7))))
-given_hp = int(valid_input("Please input the defending Pokemon's max HP: ", list(range(1,740))))
-if given_hp < 1: given_hp = 1
-given_power = int(valid_input("Please input the base power of the move used: ", list(range(1,256))))
-if given_power < 1: given_power = 1
+while usercontinue:
+    print("1: Simulate Battle\n2: List all saved Pokemon\n3: Add a new Pokemon\n4: Quit Program")
+    userchoice = input("Choose an option: ")
+    if userchoice == "1":
+        # Code needed: User input
+        print("- Pokemon Damage Calculator -\n")
 
-# input block for type-related values
-given_typeatk = valid_input("Please input the type of the move used: ", typechart.type_list)
-given_typeatk = typechart.type_list.index(given_typeatk)
-given_typedef1 = valid_input("Please input the first type of the defending Pokemon: ", typechart.type_list)
-given_typedef1 = typechart.type_list.index(given_typedef1)
-given_typedef2 = valid_input("Please input the second type of the defending Pokemon: ", typechart.type_list)
-given_typedef2 = typechart.type_list.index(given_typedef2)
-total_typemult = typechart.type_calc(given_typeatk, given_typedef1) * typechart.type_calc(given_typeatk, given_typedef2)
+        # input block for stats and stages
+        given_atk = int(valid_input("Please input the attacking Pokemon's Attack stat: ", list(range(1,740))))
+        if given_atk < 1: given_atk = 1
+        given_atkst = int(valid_input("Please input the attacking Pokemon's Attack stage: ", list(range(-6,7))))
+        given_def = int(valid_input("Please input the defending Pokemon's Defence stat: ", list(range(1,740))))
+        if given_def < 1: given_def = 1
+        given_defst = int(valid_input("Please input the defending Pokemon's Defence stage: ", list(range(-6,7))))
+        given_hp = int(valid_input("Please input the defending Pokemon's max HP: ", list(range(1,740))))
+        if given_hp < 1: given_hp = 1
+        given_power = int(valid_input("Please input the base power of the move used: ", list(range(1,256))))
+        if given_power < 1: given_power = 1
 
-given_stab = valid_input("Does the move used benefit from the Same Type Attack Bonus?(Y/N) ", ["Y", "N"])
-if given_stab == "Y": given_stab = 1.5
-else: given_stab = 1
+        # input block for type-related values
+        given_typeatk = valid_input("Please input the type of the move used: ", typechart.type_list)
+        given_typeatk = typechart.type_list.index(given_typeatk)
+        given_typedef1 = valid_input("Please input the first type of the defending Pokemon: ", typechart.type_list)
+        given_typedef1 = typechart.type_list.index(given_typedef1)
+        given_typedef2 = valid_input("Please input the second type of the defending Pokemon: ", typechart.type_list)
+        given_typedef2 = typechart.type_list.index(given_typedef2)
+        total_typemult = typechart.type_calc(given_typeatk, given_typedef1) * typechart.type_calc(given_typeatk, given_typedef2)
 
-# Calculates the total stats based on the given value and stage
-total_atk = stage_mult(given_atk, given_atkst)
-print(f"With an Attack stat of {given_atk} at stage {given_atkst},\nthe attacking Pokemon has an effective Attack stat of {total_atk}")
-total_def = stage_mult(given_def, given_defst)
-print(f"With an Defence stat of {given_def} at stage {given_defst},\nthe defending Pokemon has an effective Defence stat of {total_def}")
+        given_stab = valid_input("Does the move used benefit from the Same Type Attack Bonus?(Y/N) ", ["Y", "N"])
+        if given_stab == "Y": given_stab = 1.5
+        else: given_stab = 1
 
-# Outputs the type matchup info for the user
-print(f"Using a {typechart.type_list[given_typeatk]}-type move against a {typechart.type_list[given_typedef1]}/{typechart.type_list[given_typedef2]} Pokemon results in a type multiplier of {total_typemult}")
-print(typechart.type_message(total_typemult))
+        # Calculates the total stats based on the given value and stage
+        total_atk = stage_mult(given_atk, given_atkst)
+        print(f"With an Attack stat of {given_atk} at stage {given_atkst},\nthe attacking Pokemon has an effective Attack stat of {total_atk}")
+        total_def = stage_mult(given_def, given_defst)
+        print(f"With an Defence stat of {given_def} at stage {given_defst},\nthe defending Pokemon has an effective Defence stat of {total_def}")
 
-if total_typemult == 0:
-    # If total_typemult is 0, then the move will never deal damage
-    # No need to bother calculating
-    print("This move will not deal any damage!")
-else:
-    damage_min = damage_calc(given_power, total_atk, total_def, total_typemult, given_stab, 0.85)
-    damage_max = damage_calc(given_power, total_atk, total_def, total_typemult, given_stab, 1)
-    # Code needed: Output message to terminal
-    print(f"On a low roll, this move will deal {damage_min} damage, or {percentof(damage_min, given_hp)}% of the opposing Pokemon's health.")
-    print(f"On a high roll, this move will deal {damage_max} damage, or {percentof(damage_max, given_hp)}% of the opposing Pokemon's health.")
+        # Outputs the type matchup info for the user
+        print(f"Using a {typechart.type_list[given_typeatk]}-type move against a {typechart.type_list[given_typedef1]}/{typechart.type_list[given_typedef2]} Pokemon results in a type multiplier of {total_typemult}")
+        print(typechart.type_message(total_typemult))
 
-    # Calcs number of hits for all low rolls
-    num_hits = 0
-    hp_left = given_hp
-    while hp_left > 0:
-        num_hits += 1
-        hp_left -= damage_min
-    print(f"When landing all low rolls, it takes {num_hits} hit(s) to KO the opponent from full health.")
-    
-    # Calcs number of hits for all high rolls
-    num_hits = 0
-    hp_left = given_hp
-    while hp_left > 0:
-        num_hits += 1
-        hp_left -= damage_max
-    print(f"When landing all high rolls, it takes {num_hits} hit(s) to KO the opponent from full health.")
+        if total_typemult == 0:
+            # If total_typemult is 0, then the move will never deal damage
+            # No need to bother calculating
+            print("This move will not deal any damage!")
+        else:
+            damage_min = damage_calc(given_power, total_atk, total_def, total_typemult, given_stab, 0.85)
+            damage_max = damage_calc(given_power, total_atk, total_def, total_typemult, given_stab, 1)
+            # Code needed: Output message to terminal
+            print(f"On a low roll, this move will deal {damage_min} damage, or {percentof(damage_min, given_hp)}% of the opposing Pokemon's health.")
+            print(f"On a high roll, this move will deal {damage_max} damage, or {percentof(damage_max, given_hp)}% of the opposing Pokemon's health.")
 
-input("Input anything to close program.")
+            # Calcs number of hits for all low rolls
+            num_hits = 0
+            hp_left = given_hp
+            while hp_left > 0:
+                num_hits += 1
+                hp_left -= damage_min
+            print(f"When landing all low rolls, it takes {num_hits} hit(s) to KO the opponent from full health.")
+            
+            # Calcs number of hits for all high rolls
+            num_hits = 0
+            hp_left = given_hp
+            while hp_left > 0:
+                num_hits += 1
+                hp_left -= damage_max
+            print(f"When landing all high rolls, it takes {num_hits} hit(s) to KO the opponent from full health.")
+
+        input("Input anything to continue.")
+    elif userchoice == "2":
+        print(list(PokeSaveStats.readpokelist().keys()))
+    elif userchoice == "3":
+        print("NOT IMPLEMENTED YET")
+    elif userchoice == "4":
+        print("Goodbye!")
+        usercontinue = False
+    else:
+        print("Invalid Input")
+    print()
