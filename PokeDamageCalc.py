@@ -111,30 +111,41 @@ while usercontinue:
     if userchoice == "1":
         # Code needed: User input
         print("- Pokemon Damage Calculator -\n")
+        pokedict = PokeSaveStats.readpokelist()
 
         # input block for stats and stages
-        given_atk = int(valid_input("Please input the attacking Pokemon's Attack stat: ", list(range(1,740))))
-        if given_atk < 1: given_atk = 1
+        pokemon_atk_name = valid_input("Please choose the Attacking Pokemon: ", list(pokedict.keys()))
+        pokemon_atk_stat = pokedict[pokemon_atk_name]
+        pokemon_def_name = valid_input("Please choose the Defending Pokemon: ", list(pokedict.keys()))
+        pokemon_def_stat = pokedict[pokemon_def_name]
+        # HP PhAttack PhDefence SpAttack SpDefence Type1 Type2
+
         given_atkst = int(valid_input("Please input the attacking Pokemon's Attack stage: ", list(range(-6,7))))
-        given_def = int(valid_input("Please input the defending Pokemon's Defence stat: ", list(range(1,740))))
-        if given_def < 1: given_def = 1
         given_defst = int(valid_input("Please input the defending Pokemon's Defence stage: ", list(range(-6,7))))
-        given_hp = int(valid_input("Please input the defending Pokemon's max HP: ", list(range(1,740))))
-        if given_hp < 1: given_hp = 1
+
+        phys_or_spec = valid_input("Is the move used Physical or Special? (P/S): ", ["P", "S"])
+        if phys_or_spec == "P":
+            given_atk = pokemon_atk_stat[1]
+            given_def = pokemon_def_stat[2]
+        else:
+            given_atk = pokemon_atk_stat[3]
+            given_def = pokemon_def_stat[4]
+        
+        given_hp = pokemon_def_stat[0]
+
         given_power = int(valid_input("Please input the base power of the move used: ", list(range(1,256))))
         if given_power < 1: given_power = 1
 
         # input block for type-related values
         given_typeatk = valid_input("Please input the type of the move used: ", typechart.type_list)
         given_typeatk = typechart.type_list.index(given_typeatk)
-        given_typedef1 = valid_input("Please input the first type of the defending Pokemon: ", typechart.type_list)
-        given_typedef1 = typechart.type_list.index(given_typedef1)
-        given_typedef2 = valid_input("Please input the second type of the defending Pokemon: ", typechart.type_list)
-        given_typedef2 = typechart.type_list.index(given_typedef2)
+        given_typedef1 = typechart.type_list.index(pokemon_def_stat[5])
+        given_typedef2 = typechart.type_list.index(pokemon_def_stat[6])
         total_typemult = typechart.type_calc(given_typeatk, given_typedef1) * typechart.type_calc(given_typeatk, given_typedef2)
 
-        given_stab = valid_input("Does the move used benefit from the Same Type Attack Bonus?(Y/N) ", ["Y", "N"])
-        if given_stab == "Y": given_stab = 1.5
+
+        if (given_typeatk == pokemon_atk_stat[5]) or (given_typeatk == pokemon_atk_stat[6]):
+            given_stab = 1.5
         else: given_stab = 1
 
         # Calculates the total stats based on the given value and stage
