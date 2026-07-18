@@ -103,6 +103,29 @@ def stage_mult(value=10, stage=0):
     mult = stage_num / stage_den
     return round(value * mult)
 
+def validnumber_input(message):
+    """A variant of valid_input() that uses while loop input validation to ensure the user inputs an int greater than 0.
+
+    Args:
+        message (str): A message for the input() function
+
+    Returns:
+        int: The validated input as an int
+    """
+    given_value = ""
+    while len(str(given_value)) < 1:
+        given_value = input(message)
+        try:
+            given_value = int(given_value)
+        except ValueError:
+            given_value = ""
+            print("Invalid input.")
+        else:
+            if given_value <= 0:
+                given_value = ""
+                print("Invalid input.")
+    return given_value
+
 usercontinue = True
 
 while usercontinue:
@@ -133,7 +156,7 @@ while usercontinue:
         
         given_hp = pokemon_def_stat[0]
 
-        given_power = int(valid_input("Please input the base power of the move used: ", list(range(1,256))))
+        given_power = int(validnumber_input("Please input the base power of the move used: "))
         if given_power < 1: given_power = 1
 
         # input block for type-related values
@@ -189,7 +212,26 @@ while usercontinue:
     elif userchoice == "2":
         print(list(PokeSaveStats.readpokelist().keys()))
     elif userchoice == "3":
-        print("NOT IMPLEMENTED YET")
+        addnew_name = input("Please input the Pokemon's name: ")
+
+        addnew_hp = int(validnumber_input("Please input the Pokemon's max HP: "))
+        if addnew_hp < 1: addnew_hp = 1
+
+        addnew_patk = int(validnumber_input("Please input the Pokemon's Physical Attack stat: "))
+        if addnew_patk < 1: addnew_patk = 1
+        addnew_pdef = int(validnumber_input("Please input the Pokemon's Physical Defence stat: "))
+        if addnew_pdef < 1: addnew_pdef = 1
+
+        addnew_satk = int(validnumber_input("Please input the Pokemon's Special Attack stat: "))
+        if addnew_satk < 1: addnew_satk = 1
+        addnew_sdef = int(validnumber_input("Please input the Pokemon's Special Defence stat: "))
+        if addnew_sdef < 1: addnew_sdef = 1
+
+        addnew_type1 = valid_input("Please input the first type of the Pokemon: ", typechart.type_list)
+        addnew_type2 = valid_input("Please input the second type of the Pokemon: ", typechart.type_list)
+
+        PokeSaveStats.addnewentry(addnew_name, addnew_hp, addnew_patk, addnew_pdef, addnew_satk, addnew_sdef, addnew_type1, addnew_type2)
+
     elif userchoice == "4":
         print("Goodbye!")
         usercontinue = False
