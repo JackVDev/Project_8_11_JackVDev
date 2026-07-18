@@ -1,8 +1,8 @@
 """
     PokeDamageCalc.py
     Jack Verdin
-    The main file for my Project 1 program. The program acts as a simplified Pokemon damage calculator.
-    6/28/2026
+    The main file for my Project 2 program. The program acts as a simplified Pokemon damage calculator and allows for the user to save Pokemon and their stats to a file.
+    7/18/2026
 """
 
 import typechart
@@ -231,7 +231,6 @@ while usercontinue:
         addnew_type2 = valid_input("Please input the second type of the Pokemon: ", typechart.type_list)
 
         PokeSaveStats.addnewentry(addnew_name, addnew_hp, addnew_patk, addnew_pdef, addnew_satk, addnew_sdef, addnew_type1, addnew_type2)
-
     elif userchoice == "4":
         print("Goodbye!")
         usercontinue = False

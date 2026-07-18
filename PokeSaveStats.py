@@ -1,7 +1,7 @@
 """
     PokeSaveStats.py
     Jack Verdin
-    This program uses Path and json to read and write details about pokemon to a file. This allows the user to easily use a preset set of stats and typings for the main program.
+    This program uses Path to read and write details about pokemon to a file. This allows the user to easily use a preset set of stats and typings for the main program.
     7/9/2026
 """
 
@@ -12,6 +12,18 @@ savefile = Path("saved_pokemon.txt")
 pokelist = savefile.read_text().rstrip()
 
 def addnewentry(name, hp, patk , pdef, satk, sdef, type1, type2):
+    """Adds a new entry to saved_pokemon.txt, saving it for later
+
+    Args:
+        name (str): The name of the new Pokemon
+        hp (int): The HP stat of the new Pokemon
+        patk (int): The Physical Attack stat of the new Pokemon
+        pdef (int): The Physical Defence stat of the new Pokemon
+        satk (int): The Special Attack stat of the new Pokemon
+        sdef (int): The Special Defence stat of the new Pokemon
+        type1 (str): The first Type of the new Pokemon
+        type2 (str): The second Type of the new Pokemon
+    """
     savefile = Path("saved_pokemon.txt")
     pokelist = savefile.read_text().rstrip()
     # Name HP PhAttack PhDefence SpAttack SpDefence Type1 Type2
@@ -56,13 +68,3 @@ def readpokelist(getvalues = False):
             return outputvalues
     else:
         return outputdict
-
-# BASIC IDEA: Subject To Change
-# Ask user what to do: Simulate or Add New Pokemon
-    # Adding a new Pokemon, get input for all the stats and a name
-    # Save the details to a text file
-    # Loop back to start
-# Simulate battle
-# Program extracts stats and names saved in file
-# List of saved pokemon is given to user to choose from (Always lists all pokemon in file)
-# Rest of PokeDamageCalc.py plays out as ususal
